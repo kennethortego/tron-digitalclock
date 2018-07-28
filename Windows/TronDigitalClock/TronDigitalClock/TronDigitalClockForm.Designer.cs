@@ -30,12 +30,26 @@
         {
             this.components = new System.ComponentModel.Container();
             this.drawDigitTimer = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Source Code Pro Medium", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(784, 411);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "[keypress]";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TronDigitalClockForm
             // 
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(784, 411);
+            this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "TronDigitalClockForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
@@ -49,6 +63,7 @@
 
         #endregion
         private System.Windows.Forms.Timer drawDigitTimer;
+        private System.Windows.Forms.Label label1;
     }
 }
 

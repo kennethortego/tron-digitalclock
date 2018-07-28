@@ -14,6 +14,8 @@ namespace TronDigitalClock
 {
     public partial class TronDigitalClockForm : Form
     {
+        public static bool isarcde = false;
+
         private const int PIXEL_SIZE = 2;
         private const int FONT_ROWS = 7;
         private const int FONT_COLS = 5;
@@ -89,17 +91,23 @@ namespace TronDigitalClock
 
             previewMode = true;
 
+            
+
         }
 
         private void TronDigitalClockForm_Load(object sender, EventArgs e)
         {
             Cursor.Hide();
-            TopMost = true;
+            TopMost = isarcde ? false : true;
 
-            drawDigitTimer.Interval = 1;
-            drawDigitTimer.Tick += new EventHandler(drawDigitTimer_Tick);
-            drawDigitTimer.Start();
+            if (!isarcde)
+            {
+                drawDigitTimer.Interval = 1;
+                drawDigitTimer.Tick += new EventHandler(drawDigitTimer_Tick);
+                drawDigitTimer.Start();
+            }
 
+            label1.Text = "";
         }
 
         private void drawDigitTimer_Tick(object sender, System.EventArgs e)
@@ -180,7 +188,8 @@ namespace TronDigitalClock
             brush = new SolidBrush(Color.FromArgb(0x9D, 0xF6, 0xD8));
             formGraphics = e.Graphics;
             
-            updateDigitUI();
+            if (!isarcde)
+                updateDigitUI();
         }
 
         private void updateDigitUI()
@@ -479,6 +488,9 @@ namespace TronDigitalClock
 
         private void TronDigitalClockForm_MouseMove(object sender, MouseEventArgs e)
         {
+            if (isarcde)
+                return;
+
             if (!mouseLocation.IsEmpty)
             {
                 // Terminate if mouse is moved a significant distance
@@ -496,15 +508,45 @@ namespace TronDigitalClock
 
         private void TronDigitalClockForm_MouseClick(object sender, MouseEventArgs e)
         {
+            if (isarcde)
+                return;
+
             if (!previewMode)
                 Application.Exit();
         }
 
         private void TronDigitalClockForm_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (isarcde)
+            {
+                this.label1.Text = ((int)e.KeyChar).ToString(); 
+
+                if ((int)e.KeyChar == 27) // this is the exit combo keys
+                    Application.Exit();
+
+                return;
+            }
+                
+
             if (!previewMode)
                 Application.Exit();
         }
-        
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (!isarcde)
+            {
+                if (keyData == Keys.Up || keyData == Keys.Down || keyData == Keys.Left || keyData == Keys.Right)
+                {
+                    if (!previewMode)
+                        Application.Exit();
+
+                    return true;
+                }
+            }
+            
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
     }
 }
