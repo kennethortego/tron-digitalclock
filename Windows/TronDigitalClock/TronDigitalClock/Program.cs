@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,6 +32,19 @@ namespace TronDigitalClock
                 if (firstArgument == "/arcade")
                 {
                     TronDigitalClockForm.isarcde = true;
+
+                    string startprogram = Convert.ToString(ConfigurationManager.AppSettings["StartProgram"]);
+
+                    if (!string.IsNullOrWhiteSpace(startprogram))
+                    {
+                        ProcessStartInfo psi = new ProcessStartInfo(startprogram);
+                        psi.CreateNoWindow = true;
+                        psi.UseShellExecute = false;
+
+                        Process p = Process.Start(psi);
+                        p.WaitForExit();
+                        p.Close();
+                    }
 
                     ShowScreenSaver();
                     Application.Run();
